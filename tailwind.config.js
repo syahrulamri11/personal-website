@@ -7,10 +7,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#4CAF50',
-        secondary: '#FF9800',
-        background: '#f9f9f9',
-        text: '#333333',
+        primary: '#2D3748', // Dark Grayish Blue (lebih elegan)
+        secondary: '#38B2AC', // Teal (warna yang lebih calm dan fresh)
+        background: '#F7FAFC', // Off-White (membuat tampilan lebih terang dan bersih)
+        text: '#2D3748', // Dark Text Color for better readability
+        accent: '#F6AD55', // Soft Orange for highlights
+        link: '#3182CE', // A blue link color for good contrast
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
