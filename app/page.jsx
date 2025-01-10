@@ -1,4 +1,5 @@
 // /app/page.jsx
+import { Button } from "@nextui-org/react";
 export default function Home() {
   return (
     <div className="bg-background min-h-screen flex flex-col">
@@ -29,65 +30,70 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Recent Projects Section */}
-      <section className="py-16 px-8 md:px-16 lg:px-32 bg-gray-100 text-gray-800">
+       {/* Recent Projects Section */}
+       <section className="py-16 px-8 md:px-16 lg:px-32 bg-gray-100 text-gray-800">
         <h2 className="text-3xl md:text-4xl font-bold mb-8 text-primary">My Recent Projects</h2>
         <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {/* Project 1 */}
-          <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-            <img src="/lomboktravelia.png" alt="Project 1" className="w-full h-40 object-cover" />
-            <div className="p-4">
-              <h3 className="text-xl font-bold mb-2 text-secondary">Lombok Travelia</h3>
-              <p className="text-gray-600 mb-4">
-                A fully coded travel booking platform built from next js, providing users with a seamless way to explore and book travel experiences in Lombok.
-              </p>
-              <a
-                href="https://lomboktravelia.netlify.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-link font-semibold hover:underline"
-              >
-                View Project
-              </a>
-            </div>
-          </div>
-          {/* Project 2 */}
-          <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-            <img src="/lezatara.png" alt="Project 2" className="w-full h-40 object-cover" />
-            <div className="p-4">
-              <h3 className="text-xl font-bold mb-2 text-secondary">Lezatara</h3>
-              <p className="text-gray-600 mb-4">
-                A website indonesian traditional food and built entirely from the ground up, offering intuitive tools for project and task tracking.
-              </p>
-              <a
-                href="https://lezatara.netlify.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-link font-semibold hover:underline"
-              >
-                View Project
-              </a>
-            </div>
-          </div>
-          {/* Project 3 */}
-          <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-            <img src="/nutriwise.png" alt="Project 3" className="w-full h-40 object-cover" />
-            <div className="p-4">
-              <h3 className="text-xl font-bold mb-2 text-secondary">Nutriwise</h3>
-              <p className="text-gray-600 mb-4">
-                A nutrition tracking app coded from vanilla javascript, offering a clean and user-friendly interface to help users maintain a healthy lifestyle.
-              </p>
-              <a
-                href="https://nutriwise.netlify.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-link font-semibold hover:underline"
-              >
-                View Project
-              </a>
-            </div>
+        {/* Project 1 */}
+        <div className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-gray-50">
+          <img src="/lomboktravelia.png" alt="Project 1" className="w-full h-40 object-cover" />
+          <div className="p-4">
+            <h3 className="text-xl font-bold mb-2 text-secondary">Lombok Travelia</h3>
+            <p className="text-gray-600 mb-4">
+              A fully coded travel booking platform built from next js, providing users with a seamless way to explore and book travel experiences in Lombok.
+            </p>
+            <Button
+              as="a"
+              href="https://lomboktravelia.netlify.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gradient-to-tr from-teal-400 to-blue-500 text-white px-5 py-2 rounded-md shadow-lg hover:shadow-xl hover:scale-105 hover:from-teal-500 hover:to-blue-600 transition-all duration-300"
+            >
+              View Project
+            </Button>
           </div>
         </div>
+
+        {/* Project 2 */}
+        <div className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-gray-50">
+          <img src="/lezatara.png" alt="Project 2" className="w-full h-40 object-cover" />
+          <div className="p-4">
+            <h3 className="text-xl font-bold mb-2 text-secondary">Lezatara</h3>
+            <p className="text-gray-600 mb-4">
+              A website indonesian traditional food and built entirely from the ground up, offering intuitive tools for project and task tracking.
+            </p>
+            <Button
+              as="a"
+              href="https://lezatara.netlify.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gradient-to-tr from-teal-400 to-blue-500 text-white px-5 py-2 rounded-md shadow-lg hover:shadow-xl hover:scale-105 hover:from-teal-500 hover:to-blue-600 transition-all duration-300"
+            >
+              View Project
+            </Button>
+          </div>
+        </div>
+
+        {/* Project 3 */}
+        <div className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-gray-50">
+          <img src="/nutriwise.png" alt="Project 3" className="w-full h-40 object-cover" />
+          <div className="p-4">
+            <h3 className="text-xl font-bold mb-2 text-secondary">Nutriwise</h3>
+            <p className="text-gray-600 mb-4">
+              A nutrition tracking app coded from vanilla javascript, offering a clean and user-friendly interface to help users maintain a healthy lifestyle.
+            </p>
+            <Button
+              as="a"
+              href="https://nutriwise.netlify.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gradient-to-tr from-teal-400 to-blue-500 text-white px-5 py-2 rounded-md shadow-lg hover:shadow-xl hover:scale-105 hover:from-teal-500 hover:to-blue-600 transition-all duration-300"
+            >
+              View Project
+            </Button>
+          </div>
+        </div>
+      </div>
       </section>
 
       {/* Subscribe Section */}

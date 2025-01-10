@@ -36,7 +36,7 @@ const Navbar = () => (
         About Me
       </Link>
       <a
-        href="https://linkedin.com/in/syahrulamri"
+        href="https://linkedin.com/in/syahrul-amri-1b8338197"
         target="_blank"
         rel="noopener noreferrer"
         className="px-4 py-2 bg-link text-white font-medium rounded-lg shadow-md hover:bg-blue-700 transition-colors"

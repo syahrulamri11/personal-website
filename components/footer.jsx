@@ -1,3 +1,5 @@
+import { FaLinkedin, FaGithub, FaTwitter, FaInstagram } from 'react-icons/fa';
+
 const Footer = () => (
   <footer className="bg-primary text-white py-8">
     <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
@@ -58,6 +60,40 @@ const Footer = () => (
         <p className="text-sm text-gray-300">
           Address: Sumbawa, Indonesia
         </p>
+        <div className="flex justify-center md:justify-start mt-4 space-x-4">
+          <a
+            href="https://linkedin.com/in/syahrul-amri-1b8338197"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-300 hover:text-accent text-2xl transition-colors"
+          >
+            <FaLinkedin />
+          </a>
+          <a
+            href="https://github.com/syahrulamri11"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-300 hover:text-accent text-2xl transition-colors"
+          >
+            <FaGithub />
+          </a>
+          <a
+            href="https://x.com/syahrulamrii"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-300 hover:text-accent text-2xl transition-colors"
+          >
+            <FaTwitter />
+          </a>
+          <a
+            href="https://instagram.com/syahrul11_amri"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-300 hover:text-accent text-2xl transition-colors"
+          >
+            <FaInstagram />
+          </a>
+        </div>
       </div>
     </div>
 
