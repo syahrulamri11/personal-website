@@ -1,27 +1,24 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { db } from "../config/firebase";
+import { collection, getDocs } from "firebase/firestore";
+
 export default function Articles() {
-  const articles = [
-    {
-      title: "Exploring the Beauty of Lombok",
-      description:
-        "Discover the hidden gems of Lombok, from pristine beaches to lush mountains. A guide for travelers seeking adventure and tranquility.",
-      image: "/comingsoon.png",
-      link: "/articles/lombok-beauty",
-    },
-    {
-      title: "The Future of Web Development",
-      description:
-        "A comprehensive look at modern web technologies and trends, exploring how they are shaping the digital world for the better.",
-      image: "/comingsoon.png",
-      link: "/articles/web-development",
-    },
-    {
-      title: "Tips for Effective Public Speaking",
-      description:
-        "Master the art of public speaking with proven techniques to engage your audience and deliver memorable presentations.",
-      image: "/comingsoon.png",
-      link: "/articles/public-speaking",
-    },
-  ];
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      const querySnapshot = await getDocs(collection(db, "articles"));
+      const fetchedArticles = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setArticles(fetchedArticles);
+    };
+
+    fetchArticles();
+  }, []);
 
   return (
     <div className="p-8 bg-gradient-to-br from-background to-gray-200 min-h-screen flex flex-col items-center mt-10">
@@ -54,9 +51,9 @@ export default function Articles() {
       {/* Articles Section */}
       <section className="w-full">
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 px-4 lg:px-0">
-          {articles.map((article, index) => (
+          {articles.map((article) => (
             <div
-              key={index}
+              key={article.id}
               className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-xl"
             >
               <div className="relative">
