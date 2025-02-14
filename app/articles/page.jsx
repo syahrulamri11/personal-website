@@ -1,20 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { db } from "../config/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { supabase } from "../config/supabase"; // Pastikan import Supabase, bukan Firebase
 
 export default function Articles() {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
     const fetchArticles = async () => {
-      const querySnapshot = await getDocs(collection(db, "articles"));
-      const fetchedArticles = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setArticles(fetchedArticles);
+      const { data, error } = await supabase.from("articles").select("*").order("createdAt", { ascending: false });
+
+      if (error) {
+        console.error("Error fetching articles:", error);
+      } else {
+        setArticles(data);
+      }
     };
 
     fetchArticles();
@@ -74,7 +74,7 @@ export default function Articles() {
                 </h2>
                 <p className="text-sm text-text mb-4">{article.description}</p>
                 <a
-                  href={article.link}
+                  href={`/articles/${article.id}`} // Menggunakan link yang lebih sesuai
                   className="inline-block px-5 py-2 bg-secondary text-white text-sm font-medium rounded-lg hover:bg-accent transition-colors"
                 >
                   Read More
