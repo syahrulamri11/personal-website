@@ -1,14 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "../config/supabase"; // Pastikan import Supabase, bukan Firebase
+import { motion } from "framer-motion";
+import { supabase } from "../config/supabase"; // Import Supabase
 
 export default function Articles() {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
     const fetchArticles = async () => {
-      const { data, error } = await supabase.from("articles").select("*").order("createdAt", { ascending: false });
+      const { data, error } = await supabase
+        .from("articles")
+        .select("*")
+        .order("createdAt", { ascending: false });
 
       if (error) {
         console.error("Error fetching articles:", error);
@@ -24,37 +28,63 @@ export default function Articles() {
     <div className="p-8 bg-gradient-to-br from-background to-gray-200 min-h-screen flex flex-col items-center mt-10">
       {/* Header Section */}
       <header className="mb-10 text-center">
-        <h1 className="text-5xl font-extrabold text-primary mb-4">
+        <motion.h1
+          className="text-5xl font-extrabold bg-gradient-to-r from-primary to-accent text-transparent bg-clip-text"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
           Featured Articles
-        </h1>
-        <p className="text-lg text-text max-w-2xl mx-auto">
+        </motion.h1>
+
+        <motion.p
+          className="text-lg text-text max-w-2xl mx-auto mt-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
           Explore our latest insights, guides, and stories across a variety of
           topics, designed to inspire and inform.
-        </p>
-      </header>
+        </motion.p>
 
-      {/* Previous Website Section */}
-      <div className="flex flex-col items-center mb-12">
-        <p className="text-base text-text text-center mb-4">
-          Explore more on my previous blog:
-        </p>
-        <a
-          href="https://syahrulsaamri.blogspot.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block px-6 py-3 bg-gradient-to-r from-secondary to-accent text-white font-medium rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-transform"
+        {/* Garis bawah stylish */}
+        <motion.div
+          className="w-16 h-1 bg-secondary mx-auto mt-2 rounded-full"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 0.5, duration: 0.4 }}
+        ></motion.div>
+
+        {/* Tombol Visit Blog */}
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex flex-col items-center mt-6"
         >
-          Visit Blog
-        </a>
-      </div>
+          <p className="text-base text-text text-center mb-4">
+            Explore more on my previous blog:
+          </p>
+          <a
+            href="https://syahrulsaamri.blogspot.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block px-6 py-3 bg-gradient-to-r from-secondary to-accent text-white font-medium rounded-full shadow-md hover:shadow-lg transition-transform"
+          >
+            Visit Blog
+          </a>
+        </motion.div>
+      </header>
 
       {/* Articles Section */}
       <section className="w-full">
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 px-4 lg:px-0">
           {articles.map((article) => (
-            <div
+            <motion.div
               key={article.id}
               className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-xl"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
               <div className="relative">
                 <img
@@ -80,7 +110,7 @@ export default function Articles() {
                   Read More
                 </a>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
