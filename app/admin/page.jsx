@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "@/components/toolbar";
+import Swal from "sweetalert2";
 
 export default function AdminDashboard() {
   const [user, setUser] = useState(null);
@@ -46,49 +47,73 @@ export default function AdminDashboard() {
 
   const fetchArticles = async () => {
     try {
-      const { data, error } = await supabase.from("articles").select("*").order("createdAt", { ascending: false });
+      const { data, error } = await supabase
+        .from("articles")
+        .select("*")
+        .order("createdAt", { ascending: false });
+
       if (error) throw error;
       setArticles(data);
     } catch (error) {
-      console.error("Error fetching articles:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal memuat artikel",
+        text: error.message,
+      });
     }
   };
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-  
-    setUploading(true);
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}.${fileExt}`;
-    const filePath = `images/${fileName}`;
-  
-    const { data, error } = await supabase.storage.from("images").upload(filePath, file);
-  
-    if (error) {
-      console.error("Error uploading image:", error.message);
-      setUploading(false);
-      alert("Gagal mengunggah gambar: " + error.message);
+
+    if (file.size > 2 * 1024 * 1024) {
+      Swal.fire({
+        icon: "error",
+        title: "Ukuran gambar terlalu besar!",
+        text: "Maksimal 2MB.",
+      });
       return;
     }
-  
+
+    setUploading(true);
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Date.now()}.${fileExt}`;
+    const filePath = `images/${fileName}`;
+
+    const { data, error } = await supabase.storage.from("images").upload(filePath, file);
+
+    if (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal mengunggah gambar",
+        text: error.message,
+      });
+      setUploading(false);
+      return;
+    }
+
     const { data: publicUrlData } = supabase.storage.from("images").getPublicUrl(filePath);
-  
     if (publicUrlData) {
       setImage(publicUrlData.publicUrl);
-      alert("Gambar berhasil diunggah!");
-    } else {
-      console.error("Gagal mendapatkan URL gambar.");
-      alert("Gagal mendapatkan URL gambar.");
+      Swal.fire({
+        icon: "success",
+        title: "Gambar berhasil diunggah!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
-  
+
     setUploading(false);
   };
 
   const handleAddArticle = async (e) => {
     e.preventDefault();
     if (!title.trim() || !description.trim() || !image.trim() || !editor.getHTML().trim()) {
-      alert("Semua kolom harus diisi!");
+      Swal.fire({
+        icon: "warning",
+        title: "Semua kolom harus diisi!",
+      });
       return;
     }
 
@@ -97,25 +122,61 @@ export default function AdminDashboard() {
         { title, description, image, content: editor.getHTML(), createdAt: new Date() },
       ]);
       if (error) throw error;
+
       setTitle("");
       setDescription("");
       setImage("");
       editor.commands.clearContent();
-      alert("Artikel berhasil ditambahkan!");
+      
+      Swal.fire({
+        icon: "success",
+        title: "Artikel berhasil ditambahkan!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
       setView("list");
       fetchArticles();
     } catch (err) {
-      console.error("Gagal menambahkan artikel:", err);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal menambahkan artikel",
+        text: err.message,
+      });
     }
   };
 
   const handleDelete = async (id) => {
+    const confirmDelete = await Swal.fire({
+      title: "Hapus artikel ini?",
+      text: "Tindakan ini tidak bisa dibatalkan!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Ya, hapus!",
+    });
+
+    if (!confirmDelete.isConfirmed) return;
+
     try {
       const { error } = await supabase.from("articles").delete().eq("id", id);
       if (error) throw error;
+
+      Swal.fire({
+        icon: "success",
+        title: "Artikel berhasil dihapus!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
       fetchArticles();
     } catch (error) {
-      console.error("Error deleting article:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal menghapus artikel",
+        text: error.message,
+      });
     }
   };
 
@@ -153,14 +214,30 @@ export default function AdminDashboard() {
                       )}
                       <h3 className="font-bold text-lg text-gray-900">{article.title}</h3>
                       <p className="text-gray-600 text-sm">{article.description}</p>
-                      <Button variant="destructive" onClick={() => handleDelete(article.id)} className="mt-2">🗑 Hapus</Button>
+                      <Button variant="destructive" onClick={() => handleDelete(article.id)} className="mt-2">
+                        🗑 Hapus
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
               </div>
             )}
           </>
-        ) : null}
+        ) : (
+          <form onSubmit={handleAddArticle} className="space-y-5 bg-white p-6 rounded-lg shadow-lg">
+            <input type="text" placeholder="Judul" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full p-3 border rounded-lg" required />
+            <input type="text" placeholder="Deskripsi" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full p-3 border rounded-lg" required />
+            
+            <input type="file" accept="image/*" onChange={handleImageUpload} className="w-full p-2 border rounded-lg" />
+            {uploading && <p className="text-sm text-blue-500">Mengunggah...</p>}
+            
+            {image && <img src={image} alt="Preview" className="w-full max-h-48 object-cover rounded-lg border" />}
+            
+            <Toolbar editor={editor} />
+            <EditorContent editor={editor} />
+            <Button type="submit" className="bg-green-500 hover:bg-green-600">Tambah</Button>
+          </form>
+        )}
       </div>
     </div>
   );
