@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { db } from "../config/firebase";
-import Lottie from "lottie-react";
 
 export default function Articles() {
   const [articles, setArticles] = useState([]);
@@ -79,15 +78,13 @@ export default function Articles() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
           >
-            <Lottie
-              animationData={null}
-              path="https://assets6.lottiefiles.com/packages/lf20_iwmd6pyr.json"
+            <img
+              src="/maintance.svg"
+              alt="Under Maintenance"
               className="w-80 mb-6"
-              loop
-              autoplay
             />
             <h2 className="text-3xl font-semibold text-gray-800 mb-4">
-              Under Maintenance Ges Sabar
+              Under Maintenance Ges Sabar 😅
             </h2>
             <p className="text-gray-600 text-lg max-w-xl">
               We're currently performing scheduled maintenance. Please check back soon!
