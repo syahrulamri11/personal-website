@@ -222,7 +222,7 @@ export default function About() {
           <FaMapMarkerAlt className="text-3xl text-primary" />
           <div>
             <p className="text-sm text-gray-500">Location</p>
-            <p className="text-lg font-semibold text-gray-700">Sumbawa, NTB, Indonesia</p>
+            <p className="text-lg font-semibold text-gray-700">Jakarta, Indonesia</p>
           </div>
         </div>
       </div>
