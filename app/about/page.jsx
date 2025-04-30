@@ -11,17 +11,17 @@ export default function About() {
             About <span className="text-yellow-300">Me</span>
           </h1>
           <p className="text-lg md:text-xl max-w-lg">
-          I am Syahrul Amri, a sports enthusiast with a deep interest in history and political literacy. 
-          Currently exploring the world of technology and sharpening my skills in web programming, 
-          particularly as a UI/UX Designer and Front-End Developer.
-          I am also passionate about effective communication and public relations, shaped through diverse experiences in organizational roles.
+          I am Syahrul Amri, a fresh graduate in Informatics Engineering with a strong interest in sports, technology, and public communication.
+          I have hands-on experience in web development, content writing, and administrative project management. 
+          Passionate about digital content creation, public relations, and effective leadership, I continuously sharpen my skills in front-end development, UI/UX design, and SEO writing.
+          Through various organizational and professional roles, I’ve developed solid communication, problem-solving, and decision-making abilities.
           </p>
         </div>
         <div className="relative md:w-1/2 group mt-8 md:mt-8">
           <img
-            src="/syahrulprofile.jpg"
+            src="/syahrulgibli.jpeg"
             alt="Profile picture"
-            className="w-full max-w-sm mx-auto rounded-full shadow-2xl transform group-hover:scale-105 transition-all duration-500 border-8 border-white"
+            className="w-full max-w-xs mx-auto rounded-full shadow-2xl transform group-hover:scale-105 transition-all duration-500 border-8 border-white"
           />
         </div>
       </section>

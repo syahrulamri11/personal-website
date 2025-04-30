@@ -32,9 +32,9 @@ export default function Home() {
         </div>
         <div className="relative md:w-1/2 group mt-8 md:mt-0">
           <img
-            src="/syahrulprofile.jpg"
+            src="/syahrulgibli.jpeg"
             alt="Hero illustration"
-            className="w-full max-w-sm mx-auto rounded-lg shadow-xl transform group-hover:scale-105 transition-all duration-300 border-4 border-background  mr-10 mt-10"
+            className="w-full max-w-xs mx-auto rounded-lg shadow-xl transform group-hover:scale-105 transition-all duration-300 border-4 border-background mr-10 mt-10"
           />
         </div>
       </section>

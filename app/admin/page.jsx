@@ -2,7 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/app/config/supabase";
+import { db, auth, storage } from "@/app/config/firebase";
+import { collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, Timestamp } from "firebase/firestore";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EditorContent, useEditor } from "@tiptap/react";
@@ -16,7 +19,8 @@ export default function AdminDashboard() {
   const [articles, setArticles] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [view, setView] = useState("list");
   const router = useRouter();
@@ -32,8 +36,7 @@ export default function AdminDashboard() {
   });
 
   useEffect(() => {
-    const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
         router.push("/login");
       } else {
@@ -41,19 +44,17 @@ export default function AdminDashboard() {
         fetchArticles();
       }
       setLoading(false);
-    };
-    checkUser();
+    });
+
+    return () => unsubscribe();
   }, [router]);
 
   const fetchArticles = async () => {
     try {
-      const { data, error } = await supabase
-        .from("articles")
-        .select("*")
-        .order("createdAt", { ascending: false });
-
-      if (error) throw error;
-      setArticles(data);
+      const q = query(collection(db, "articles"), orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      const articlesList = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setArticles(articlesList);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -63,53 +64,19 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleImageUpload = async (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (!file) return;
-
-    if (file.size > 2 * 1024 * 1024) {
-      Swal.fire({
-        icon: "error",
-        title: "Ukuran gambar terlalu besar!",
-        text: "Maksimal 2MB.",
-      });
-      return;
+    if (file) {
+      setSelectedFile(file);
+      const previewURL = URL.createObjectURL(file);
+      setPreviewImage(previewURL);
     }
-
-    setUploading(true);
-    const fileExt = file.name.split(".").pop();
-    const fileName = `${Date.now()}.${fileExt}`;
-    const filePath = `images/${fileName}`;
-
-    const { data, error } = await supabase.storage.from("images").upload(filePath, file);
-
-    if (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Gagal mengunggah gambar",
-        text: error.message,
-      });
-      setUploading(false);
-      return;
-    }
-
-    const { data: publicUrlData } = supabase.storage.from("images").getPublicUrl(filePath);
-    if (publicUrlData) {
-      setImage(publicUrlData.publicUrl);
-      Swal.fire({
-        icon: "success",
-        title: "Gambar berhasil diunggah!",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    }
-
-    setUploading(false);
   };
 
   const handleAddArticle = async (e) => {
     e.preventDefault();
-    if (!title.trim() || !description.trim() || !image.trim() || !editor.getHTML().trim()) {
+
+    if (!title.trim() || !description.trim() || !selectedFile || !editor.getHTML().trim()) {
       Swal.fire({
         icon: "warning",
         title: "Semua kolom harus diisi!",
@@ -118,31 +85,61 @@ export default function AdminDashboard() {
     }
 
     try {
-      const { error } = await supabase.from("articles").insert([
-        { title, description, image, content: editor.getHTML(), createdAt: new Date() },
-      ]);
-      if (error) throw error;
+      setUploading(true);
 
-      setTitle("");
-      setDescription("");
-      setImage("");
-      editor.commands.clearContent();
-      
-      Swal.fire({
-        icon: "success",
-        title: "Artikel berhasil ditambahkan!",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      const fileExt = selectedFile.name.split(".").pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const storageRef = ref(storage, `images/${fileName}`);
+      const uploadTask = uploadBytesResumable(storageRef, selectedFile);
 
-      setView("list");
-      fetchArticles();
+      uploadTask.on(
+        "state_changed",
+        null,
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Gagal mengunggah gambar",
+            text: error.message,
+          });
+          setUploading(false);
+        },
+        async () => {
+          const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+
+          await addDoc(collection(db, "articles"), {
+            title,
+            description,
+            image: imageUrl,
+            content: editor.getHTML(),
+            createdAt: Timestamp.now(),
+          });
+
+          Swal.fire({
+            icon: "success",
+            title: "Artikel berhasil ditambahkan!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+
+          // Reset form
+          setTitle("");
+          setDescription("");
+          setSelectedFile(null);
+          setPreviewImage(null);
+          editor.commands.clearContent();
+
+          setView("list");
+          fetchArticles();
+          setUploading(false);
+        }
+      );
     } catch (err) {
       Swal.fire({
         icon: "error",
         title: "Gagal menambahkan artikel",
         text: err.message,
       });
+      setUploading(false);
     }
   };
 
@@ -160,16 +157,13 @@ export default function AdminDashboard() {
     if (!confirmDelete.isConfirmed) return;
 
     try {
-      const { error } = await supabase.from("articles").delete().eq("id", id);
-      if (error) throw error;
-
+      await deleteDoc(doc(db, "articles", id));
       Swal.fire({
         icon: "success",
         title: "Artikel berhasil dihapus!",
         showConfirmButton: false,
         timer: 1500,
       });
-
       fetchArticles();
     } catch (error) {
       Swal.fire({
@@ -181,7 +175,7 @@ export default function AdminDashboard() {
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await signOut(auth);
     router.push("/login");
   };
 
@@ -225,17 +219,41 @@ export default function AdminDashboard() {
           </>
         ) : (
           <form onSubmit={handleAddArticle} className="space-y-5 bg-white p-6 rounded-lg shadow-lg">
-            <input type="text" placeholder="Judul" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full p-3 border rounded-lg" required />
-            <input type="text" placeholder="Deskripsi" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full p-3 border rounded-lg" required />
-            
-            <input type="file" accept="image/*" onChange={handleImageUpload} className="w-full p-2 border rounded-lg" />
-            {uploading && <p className="text-sm text-blue-500">Mengunggah...</p>}
-            
-            {image && <img src={image} alt="Preview" className="w-full max-h-48 object-cover rounded-lg border" />}
-            
+            <input
+              type="text"
+              placeholder="Judul"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full p-3 border rounded-lg"
+              required
+            />
+            <input
+              type="text"
+              placeholder="Deskripsi"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full p-3 border rounded-lg"
+              required
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="w-full p-2 border rounded-lg"
+            />
+
+            {previewImage && (
+              <img src={previewImage} alt="Preview" className="w-full max-h-48 object-cover rounded-lg border" />
+            )}
+
+            {uploading && <p className="text-sm text-blue-500">Sedang mengunggah gambar...</p>}
+
             <Toolbar editor={editor} />
             <EditorContent editor={editor} />
-            <Button type="submit" className="bg-green-500 hover:bg-green-600">Tambah</Button>
+
+            <Button type="submit" className="bg-green-500 hover:bg-green-600" disabled={uploading}>
+              {uploading ? "Mengunggah..." : "Tambah"}
+            </Button>
           </form>
         )}
       </div>

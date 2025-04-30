@@ -1,8 +1,9 @@
-"use client"; // Karena kita pakai useState & Supabase Auth
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/app/config/supabase"; // Gunakan Supabase
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/app/config/firebase"; // konfigurasi Firebase Auth
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -12,22 +13,15 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(""); // Reset error sebelum login
+    setError("");
 
-    // Gunakan Supabase Auth untuk login
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push("/admin"); // redirect ke halaman admin
+    } catch (err) {
+      console.error("Login Error:", err.message);
       setError("Login gagal. Periksa email & password!");
-      console.error("Login Error:", error.message);
-      return;
     }
-
-    // Jika berhasil, redirect ke dashboard admin
-    router.push("/admin");
   };
 
   return (
