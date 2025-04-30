@@ -98,7 +98,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { db } from "@/config/firebase";
+import { db } from "../../config/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { FaCalendarAlt } from "react-icons/fa";
 
