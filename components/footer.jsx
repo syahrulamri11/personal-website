@@ -7,7 +7,9 @@ const Footer = () => (
       <div>
         <h3 className="text-lg font-semibold mb-4 text-accent">About Me</h3>
         <p className="text-sm text-gray-300">
-          I'm Syahrul Amri, a tech enthusiast with a passion for sports, history, and creating impactful digital projects. Connect with me to collaborate or learn more about my work.
+        I'm Syahrul Amri, a fresh graduate in Informatics Engineering with a passion for technology, writing, and impactful digital innovation.
+         Experienced in web development, SEO content writing, and project administration, I thrive in both creative and analytical environments.
+          Let’s connect and collaborate to bring ideas into meaningful results.
         </p>
       </div>
 
@@ -58,7 +60,7 @@ const Footer = () => (
         <p className="text-sm text-gray-300">Email: syahrulamri1102@gmail.com</p>
         <p className="text-sm text-gray-300">Phone: +62 831-4305-2787</p>
         <p className="text-sm text-gray-300">
-          Address: Sumbawa, Indonesia
+          Address: Jakarta, Indonesia
         </p>
         <div className="flex justify-center md:justify-start mt-4 space-x-4">
           <a
