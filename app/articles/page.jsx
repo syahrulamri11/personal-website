@@ -57,16 +57,30 @@ export default function Articles() {
           transition={{ delay: 0.5, duration: 0.4 }}
         ></motion.div>
 
+      <div className="flex flex-wrap justify-center mt-6 gap-4">
         <motion.a
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           href="https://syahrulsaamri.blogspot.com/"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block mt-6 px-6 py-3 bg-gradient-to-r from-secondary to-accent text-white font-medium rounded-full shadow-md hover:shadow-lg transition-transform"
+          className="px-6 py-3 bg-gradient-to-r from-secondary to-accent text-white font-medium rounded-full shadow-md hover:shadow-lg transition-transform"
         >
           Visit Blog
         </motion.a>
+
+        <motion.a
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          href="https://kumparan.com/syahrul-amri-1737800239833317719"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-6 py-3 bg-gradient-to-r from-[#00AACF] to-[#EC407A] text-white font-medium rounded-full shadow-md hover:shadow-lg transition-transform"
+        >
+          Additional Works
+        </motion.a>
+      </div>
+
       </header>
 
       {/* Articles List */}
@@ -87,7 +101,7 @@ export default function Articles() {
               Under Maintenance Ges Sabar 😅
             </h2>
             <p className="text-gray-600 text-lg max-w-xl">
-              We're currently performing scheduled maintenance. Please check back soon!
+              We're currently performing scheduled maintenance database. Please check back soon!
             </p>
           </motion.div>
         ) : (
