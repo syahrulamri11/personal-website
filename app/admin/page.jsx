@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { db, auth, storage } from "@/app/config/firebase";
+import { db, auth, secondaryStorage } from "@/app/config/firebase";
 import { collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, Timestamp } from "firebase/firestore";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -89,7 +89,7 @@ export default function AdminDashboard() {
 
       const fileExt = selectedFile.name.split(".").pop();
       const fileName = `${Date.now()}.${fileExt}`;
-      const storageRef = ref(storage, `images/${fileName}`);
+      const storageRef = ref(secondaryStorage, `articles/${fileName}`);
       const uploadTask = uploadBytesResumable(storageRef, selectedFile);
 
       uploadTask.on(

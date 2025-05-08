@@ -150,7 +150,7 @@ export default function ArticleDetail() {
           <h1 className="text-4xl font-extrabold text-gray-900 leading-snug">{article.title}</h1>
           <div className="flex items-center text-gray-500 text-sm mt-3">
             <FaCalendarAlt className="mr-2" />
-            <p>{new Date(article.createdAt).toLocaleDateString()}</p>
+            <p>{article.createdAt?.toDate().toLocaleDateString()}</p>
           </div>
         </div>
 
@@ -178,8 +178,8 @@ export default function ArticleDetail() {
           <div className="mt-8 pt-4 border-t flex flex-col sm:flex-row justify-between items-center text-gray-600 text-sm">
             <p className="text-center sm:text-left">&copy; {new Date().getFullYear()} Syahrul Amri</p>
             <p className="italic text-center sm:text-right">
-              Diterbitkan pada {new Date(article.createdAt).toLocaleDateString()}
-            </p>
+  Diterbitkan pada {article.createdAt?.toDate().toLocaleDateString()}
+</p>
           </div>
         </div>
       </div>
