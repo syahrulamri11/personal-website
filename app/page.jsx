@@ -42,7 +42,7 @@ export default function Home() {
       {/* Recent Projects Section */}
       <section className="py-12 px-6 sm:px-8 md:px-16 lg:px-32 bg-gray-100 text-gray-800">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 text-primary text-center md:text-left">
-          My Recent Projects
+          My Recent Tech Projects
         </h2>
         <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {/* Project Cards */}
@@ -75,6 +75,60 @@ export default function Home() {
                   className="bg-gradient-to-tr from-teal-400 to-blue-500 text-white px-5 py-2 rounded-md shadow-lg hover:shadow-xl hover:scale-105 hover:from-teal-500 hover:to-blue-600 transition-all duration-300"
                 >
                   View Project
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+      {/* Admin Sales Portfolio Section */}
+      <section className="py-12 px-6 sm:px-8 md:px-16 lg:px-32 bg-white text-gray-800">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 text-primary text-center md:text-left">
+          Admin Sales Portfolio
+        </h2>
+
+        <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {[{
+            title: "Sales & Stock Dashboard",
+            description:
+              "Excel-based reporting dashboard to track sales, stock movement, and product OOS status using PivotTable and data visualization.",
+            image: "/portodashboard.png",
+            link: "https://docs.google.com/spreadsheets/d/1bHrd2gQ0VpOSh65yRFK4xuYWN8u9-iUZ/edit?usp=sharing&ouid=104631266317644448346&rtpof=true&sd=true", 
+          },
+          {
+            title: "Absence & Manpower Recap",
+            description:
+              "Automated attendance recap template for sales teams, including HK calculations and finance-ready output reports.",
+            image: "/portfolio-absensi.png",
+            link: "https://docs.google.com/spreadsheets/d/1IXh1j-nLfu-fn23PHSMUUKb3bocEm239/edit?usp=sharing&ouid=104631266317644448346&rtpof=true&sd=true",
+          },
+          {
+            title: "Daily Sales Report Template",
+            description:
+              "Structured format for daily visit reports including outlet data, display status, and facing share tracking.",
+            image: "/portfolio-dailyreport.png",
+            link: "https://docs.google.com/spreadsheets/d/1stcwYsCXmr0n1rCI3Qe3jj7uyrPGJoPm/edit?usp=sharing&ouid=104631266317644448346&rtpof=true&sd=true",
+          }].map((item, index) => (
+            <div
+              key={index}
+              className="bg-gray-50 shadow-lg rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+            >
+              <img
+                src={item.image}
+                alt={item.title}
+                className="w-full h-40 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-xl font-bold mb-2 text-secondary">{item.title}</h3>
+                <p className="text-gray-600 mb-4">{item.description}</p>
+                <Button
+                  as="a"
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-gradient-to-tr from-primary to-accent text-white px-5 py-2 rounded-md shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
+                >
+                  View File
                 </Button>
               </div>
             </div>

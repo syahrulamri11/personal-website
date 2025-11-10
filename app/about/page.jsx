@@ -12,7 +12,7 @@ export default function About() {
           </h1>
           <p className="text-lg md:text-xl max-w-lg">
           I am Syahrul Amri, a fresh graduate in Informatics Engineering with a strong interest in sports, technology, and public communication.
-          I have hands-on experience in web development, content writing, and administrative project management. 
+          I have hands-on experience in administrative project management, content writing, and web development. 
           Passionate about digital content creation, public relations, and effective leadership, I continuously sharpen my skills in front-end development, UI/UX design, and SEO writing.
           Through various organizational and professional roles, I’ve developed solid communication, problem-solving, and decision-making abilities.
           </p>
@@ -37,7 +37,7 @@ export default function About() {
             { title: "Creative Design", icon: <FaPaintBrush />, description: "Figma & Canva" },
             { title: "Public Speaking", icon: <FaUsers />, description: "Effective communication and leadership" },
             { title: "Problem Solving", icon: <FaBrain />, description: "Critical thinking and decision making" },
-            { title: "Project Management", icon: <FaTasks />, description: "Team collaboration and task delegation" },
+            { title: "Project Management", icon: <FaTasks />, description: "Team collaboration, task delegation, & Proficient in Microsoft Excel (PivotTable, formulas, dashboards), Word, PowerPoint, and data reporting for team coordination and documentation." },
             { title: "Writing", icon: <FaPenNib />, description: "Content creation and documentation" },
           ].map((skill, index) => (
             <div

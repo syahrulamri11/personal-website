@@ -7,9 +7,10 @@ const Footer = () => (
       <div>
         <h3 className="text-lg font-semibold mb-4 text-accent">About Me</h3>
         <p className="text-sm text-gray-300">
-        I'm Syahrul Amri, a fresh graduate in Informatics Engineering with a passion for technology, writing, and impactful digital innovation.
-         Experienced in web development, SEO content writing, and project administration, I thrive in both creative and analytical environments.
-          Let’s connect and collaborate to bring ideas into meaningful results.
+        I’m <b>Syahrul Amri</b> — fresh graduate currently working as <b>Admin Data (Brand Sinde)</b> at <b>PT Hasta Ayu Nusantara</b>.
+          With a background in Informatics Engineering, I’m passionate about <b>data management, writing, and digital content creation</b>.
+          My professional focus lies in combining analytical precision with creativity — from sales reporting dashboards
+          to content writing and web development projects.
         </p>
       </div>
 
@@ -60,7 +61,7 @@ const Footer = () => (
         <p className="text-sm text-gray-300">Email: syahrulamri1102@gmail.com</p>
         <p className="text-sm text-gray-300">Phone: +62 831-4305-2787</p>
         <p className="text-sm text-gray-300">
-          Address: Jakarta, Indonesia
+          Address: Jakarta | Sumbawa 
         </p>
         <div className="flex justify-center md:justify-start mt-4 space-x-4">
           <a
